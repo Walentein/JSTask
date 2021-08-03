@@ -1,0 +1,27 @@
+body {
+  font-family: "Inconsolata", serif;
+  font-size: 20px;
+}
+
+#main-section {
+  background-color: #485461;
+  background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
+}
+
+.card, #list-item {
+  border-radius: 15px;
+  background-color: #222;
+  color: #eeeeee;
+}
+
+#list-title {
+  font-size: 30px;
+}
+
+.form-label {
+  color: #222;
+}
+
+.task--ready {
+  text-decoration: line-through;
+}/*# sourceMappingURL=styles.css.map */

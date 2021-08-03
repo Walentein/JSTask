@@ -1,0 +1,74 @@
+<!doctype html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/ico" href="images/favicon.ico" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+    <script src="https://kit.fontawesome.com/4598a99c45.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="js/main.js"></script>
+    <title>JS Task</title>
+</head>
+<body>
+    <header>
+
+    </header>
+
+    <main>
+        <section id="main-section" class="vh-100">
+            <div class="container py-5 h-100">
+              <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-xl-10">
+          
+                  <div class="card">
+                    <div class="card-body p-5">
+          
+                      <h6 id="list-title" class="mb-3">Bars ToDo List</h6>
+          
+                      <form  class="d-flex justify-content-center align-items-center mb-4">
+                        <div class="form-outline flex-fill form-floating">
+                          <input type="text" id="form__add-task" class="form-control form-control-lg" placeholder="Another task, huh?" />
+                          <label class="form-label" for="form__add-task">Another task, huh?</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg ms-2">Add</button>
+                      </form>
+          
+                      <ul class="list-group mb-0">
+                        <li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
+                          <div id="input-task" class="d-flex align-items-center">
+                            <input class="form-check-input me-2" type="checkbox" value="" aria-label="..." />
+                            <span class="task">Hello, World!</span>
+                          </div>
+                          <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
+                            <i class="fas fa-times text-primary"></i>
+                          </a>
+                        </li>
+                        <li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
+                          <div class="d-flex align-items-center">
+                            <input class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked />
+                            <span class="task task--ready">Test Task</span>
+                          </div>
+                          <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
+                            <i class="fas fa-times text-primary"></i>
+                          </a>
+                        </li>
+                      </ul>
+          
+                    </div>
+                  </div>
+          
+                </div>
+              </div>
+            </div>
+          </section>
+    </main>
+
+    <footer>
+
+    </footer>
+</body>
+</html>
