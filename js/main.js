@@ -12,6 +12,9 @@ const getTaskText = (element) => getTaskElem(element).querySelector(".task");
 const refreshCheckboxAndRemovesLists = function(){
     checkboxes = document.querySelectorAll("input[name='task-status']");
     removes = document.querySelectorAll("[title='Remove item']");
+
+    //console.log(checkboxes);
+    //console.log(removes);
 }
 
 const insertTask = function(task){
@@ -28,35 +31,59 @@ const insertTask = function(task){
   </li>
     `);
     refreshCheckboxAndRemovesLists();
+    restartEventListeners();
 }
-//insertTask("foo");
+const startEventListeners = function(){
+    for(let checkbox of checkboxes){
+        checkbox.addEventListener('change', function() {
+            let taskText;
+            if (this.checked) {
+                taskText = getTaskText(this);
+                taskText.classList.add("task--ready");
+            } else {
+                taskText = getTaskText(this);
+                taskText.classList.remove("task--ready");
+            }
+        });
+    }
 
-// let taskElem = getTaskElem(this);
-// console.log(taskElem);
-// let taskText = taskElem.querySelector(".task");
-// console.log(taskText);
-
-for(let checkbox of checkboxes){
-    checkbox.addEventListener('change', function() {
-        let taskText;
-        if (this.checked) {
-            //console.log("Checkbox is checked..");
-            taskText = getTaskText(this);
-            taskText.classList.add("task--ready");
-
-        } else {
-            //console.log("Checkbox is not checked..");
-            taskText = getTaskText(this);
-            taskText.classList.remove("task--ready");
-        }
-    });
+    for(let remove of removes){
+        remove.addEventListener('click', function() {
+            let task = getRemoveElem(this);
+            console.log(task);
+            task.remove();
+            refreshCheckboxAndRemovesLists();
+        });
+    }
 }
 
-for(let remove of removes){
-    remove.addEventListener('click', function() {
-        let task = getRemoveElem(this);
-        console.log(task);
-        task.remove();
-        refreshCheckboxAndRemovesLists();
-    });
+const stopEventListeners = function(){
+    for(let checkbox of checkboxes){
+        checkbox.removeEventListener('change', function() {
+            let taskText;
+            if (this.checked) {
+                taskText = getTaskText(this);
+                taskText.classList.add("task--ready");
+            } else {
+                taskText = getTaskText(this);
+                taskText.classList.remove("task--ready");
+            }
+        });
+    }
+
+    for(let remove of removes){
+        remove.removeEventListener('click', function() {
+            let task = getRemoveElem(this);
+            console.log(task);
+            task.remove();
+            refreshCheckboxAndRemovesLists();
+        });
+    }
 }
+
+const restartEventListeners = function(){
+    stopEventListeners();
+    startEventListeners();
+}
+
+startEventListeners();
