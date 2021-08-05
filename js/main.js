@@ -115,16 +115,22 @@ const restoreFromStorage = function () {
         taskValue = getItem(i);
         if (modifiedCheckedMark === stringLastWord(taskValue)) {
             let modifiedTaskValue = taskValue.substring(0, taskValue.lastIndexOf(" "));
-            insertTask(modifiedTaskValue, true);
+            insertTask(modifiedTaskValue, true, false);
         } else {
-            insertTask(taskValue, false);
+            insertTask(taskValue, false, false);
         }
+    }
+    for (let i = 10000; i < insertPosition; i++) {
+        taskValue = getItem(i);
+        insertTask(taskValue, true, true);
     }
 };
 
-const insertTask = function (task, checked) {
-    let taskList = document.querySelector("#task-list");
+const insertTask = function (task, checked, done) {
+    let taskList;
     let taskCode;
+    if (done) taskList = document.querySelector("#done-list");
+    else taskList = document.querySelector("#task-list");
     if (checked) {
         taskCode = `<li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
             <div id="input-task" class="d-flex align-items-center">
@@ -209,5 +215,5 @@ startEventListeners();
 submitButton.addEventListener("click", function () {
     let taskText = document.getElementById("form__add-task").value;
     document.getElementById("form__add-task").value = "";
-    if (taskText) insertTask(taskText, false);
+    if (taskText) insertTask(taskText, false, false);
 });
