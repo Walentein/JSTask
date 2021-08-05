@@ -3,6 +3,11 @@ body {
   font-size: 20px;
 }
 
+.hidden {
+  display: none;
+  opacity: 0;
+}
+
 #main-section {
   background-color: #485461;
   background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
@@ -12,6 +17,10 @@ body {
   border-radius: 15px;
   background-color: #222;
   color: #eeeeee;
+}
+
+.card-body {
+  transition: opacity 1s ease;
 }
 
 #list-title {
