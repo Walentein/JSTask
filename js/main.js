@@ -5,6 +5,7 @@ const listStorage = window.localStorage;
 let totalTasksNumber = Object.keys(localStorage).length;
 
 const submitButton = document.getElementById("add-task-button");
+const completeButton = document.getElementById("show-completed-button");
 let checkboxes = document.querySelectorAll("input[name='task-status']");
 let removes = document.querySelectorAll("[title='Remove item']");
 
@@ -163,9 +164,6 @@ const insertTask = function (task, checked, done) {
                 <div id="input-task" class="d-flex align-items-center">
                     <span class="task task--ready">${task}</span>
                 </div>
-                    <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
-                    <i class="fas fa-times text-primary"></i>
-                </a>
             </li>`;
     }
     taskList.insertAdjacentHTML("beforeend", taskCode);
@@ -183,6 +181,7 @@ const startEventListeners = function () {
                 taskText = getTaskText(this);
                 if (!taskText.classList.contains("task--ready")) {
                     taskText.classList.add("task--ready");
+                    insertTask(taskText.innerHTML, true, true);
                     saveToStorage();
                 }
             } else {
@@ -232,4 +231,10 @@ submitButton.addEventListener("click", function () {
     let taskText = document.getElementById("form__add-task").value;
     document.getElementById("form__add-task").value = "";
     if (taskText) insertTask(taskText, false, false);
+});
+
+completeButton.addEventListener("click", function () {
+    let completedList = document.querySelector("#done-list-container");
+    if (completedList.classList.contains("hidden")) completedList.classList.remove("hidden");
+    else completedList.classList.add("hidden");
 });

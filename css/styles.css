@@ -33,4 +33,12 @@ body {
 
 .task--ready {
   text-decoration: line-through;
+}
+
+#show-completed {
+  width: 200px;
+}
+
+.separator {
+  height: 2px;
 }/*# sourceMappingURL=styles.css.map */
