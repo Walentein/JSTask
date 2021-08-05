@@ -122,35 +122,51 @@ const restoreFromStorage = function () {
     }
     for (let i = 10000; i < insertPosition; i++) {
         taskValue = getItem(i);
-        insertTask(taskValue, true, true);
+        if (modifiedCheckedMark === stringLastWord(taskValue)) {
+            let modifiedTaskValue = taskValue.substring(0, taskValue.lastIndexOf(" "));
+            insertTask(modifiedTaskValue, true, true);
+        } else {
+            insertTask(taskValue, false, true);
+        }
     }
 };
 
 const insertTask = function (task, checked, done) {
     let taskList;
     let taskCode;
-    if (done) taskList = document.querySelector("#done-list");
-    else taskList = document.querySelector("#task-list");
-    if (checked) {
-        taskCode = `<li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
-            <div id="input-task" class="d-flex align-items-center">
-                <input name="task-status" class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked />
-                <span class="task task--ready">${task}</span>
-            </div>
-                <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
-                <i class="fas fa-times text-primary"></i>
-            </a>
-        </li>`;
+    if (!done) {
+        taskList = document.querySelector("#task-list");
+        if (checked) {
+            taskCode = `<li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
+                <div id="input-task" class="d-flex align-items-center">
+                    <input name="task-status" class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked />
+                    <span class="task task--ready">${task}</span>
+                </div>
+                    <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
+                    <i class="fas fa-times text-primary"></i>
+                </a>
+            </li>`;
+        } else {
+            taskCode = `<li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
+                <div id="input-task" class="d-flex align-items-center">
+                    <input name="task-status" class="form-check-input me-2" type="checkbox" value="" aria-label="..." />
+                    <span class="task">${task}</span>
+                </div>
+                    <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
+                    <i class="fas fa-times text-primary"></i>
+                </a>
+            </li>`;
+        }
     } else {
+        taskList = document.querySelector("#done-list");
         taskCode = `<li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
-            <div id="input-task" class="d-flex align-items-center">
-                <input name="task-status" class="form-check-input me-2" type="checkbox" value="" aria-label="..." />
-                <span class="task">${task}</span>
-            </div>
-                <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
-                <i class="fas fa-times text-primary"></i>
-            </a>
-        </li>`;
+                <div id="input-task" class="d-flex align-items-center">
+                    <span class="task task--ready">${task}</span>
+                </div>
+                    <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
+                    <i class="fas fa-times text-primary"></i>
+                </a>
+            </li>`;
     }
     taskList.insertAdjacentHTML("beforeend", taskCode);
     refreshCheckboxAndRemovesLists();
