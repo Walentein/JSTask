@@ -21,6 +21,7 @@ const clearListStorage = () => listStorage.clear();
 const getRemoveElem = (element) => element.parentNode;
 const getTaskElem = (element) => element.parentNode.parentNode;
 const getTaskText = (element) => getTaskElem(element).querySelector(".task");
+const getCompletedTaskList = (element) => getTaskElem(element).parentNode;
 
 const stringLastWord = (text) => text.split(" ").pop();
 
@@ -132,7 +133,23 @@ const restoreFromStorage = function () {
     }
 };
 
+const completedTaskExists = function (task) {
+    let insertFlag = true;
+    let tempTask;
+    let taskSpans = document.querySelectorAll(".task--ready");
+    for (let taskSpan of taskSpans) {
+        tempTask = getCompletedTaskList(taskSpan);
+        if (tempTask.id === "done-list")
+            if (taskSpan.innerHTML === task) {
+                insertFlag = false;
+                break;
+            }
+    }
+    return insertFlag;
+};
+
 const insertTask = function (task, checked, done) {
+    if (!completedTaskExists(task)) return -1;
     let taskList;
     let taskCode;
     if (!done) {
