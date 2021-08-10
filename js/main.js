@@ -247,7 +247,7 @@ startEventListeners();
 submitButton.addEventListener("click", function () {
     let taskText = document.getElementById("form__add-task").value;
     document.getElementById("form__add-task").value = "";
-    if (taskText) insertTask(taskText, false, false);
+    if (taskText.length !== 0 && taskText.trim()) insertTask(taskText, false, false);
 });
 
 completeButton.addEventListener("click", function () {
