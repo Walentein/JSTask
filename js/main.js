@@ -207,7 +207,8 @@ document.addEventListener("DOMContentLoaded", function () {
     restoreFromStorage();
 });
 
-submitButton.addEventListener("click", function () {
+submitButton.addEventListener("click", function (event) {
+    event.preventDefault();
     let taskText = document.getElementById("form__add-task").value;
     document.getElementById("form__add-task").value = "";
     if (taskText.length !== 0 && taskText.trim() && taskExists(taskText)) insertTask(taskText, false, false);
