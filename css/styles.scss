@@ -22,7 +22,7 @@ body {
 }
 
 .card-body {
-    overflow-y: scroll;
+    overflow-y: auto;
     transition: opacity 1s ease;
 }
 
