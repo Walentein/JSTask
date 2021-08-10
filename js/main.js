@@ -28,7 +28,6 @@ const stringLastWord = (text) => text.split(" ").pop();
 const refreshCheckboxAndRemovesLists = function () {
     checkboxes = document.querySelectorAll("input[name='task-status']");
     removes = document.querySelectorAll("[title='Remove item']");
-    restartEventListeners();
 };
 
 const calculateCompletedTasks = function () {
@@ -133,21 +132,15 @@ const restoreFromStorage = function () {
     }
 };
 
-const taskExists = function (task, doneList) {
+const taskExists = function (task) {
     let insertFlag = true;
     let tempTask;
-    let list;
     let taskSpans;
-    if (doneList) {
-        list = "done-list";
-        taskSpans = document.querySelectorAll(".task.task--ready");
-    } else {
-        list = "task-list";
-        taskSpans = document.querySelectorAll(".task");
-    }
+    let list = "task-list";
+    taskSpans = document.querySelectorAll(".task");
     for (let taskSpan of taskSpans) {
         tempTask = getCompletedTaskList(taskSpan);
-        if (doneList && tempTask.id === list) {
+        if (tempTask.id === list) {
             if (taskSpan.innerHTML === task) {
                 insertFlag = false;
                 break;
@@ -158,22 +151,11 @@ const taskExists = function (task, doneList) {
 };
 
 const insertTask = function (task, checked, done) {
-    if (!taskExists(task, true)) return -1;
     let taskList;
     let taskCode;
     if (!done) {
         taskList = document.querySelector("#task-list");
-        if (checked) {
-            taskCode = `<li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
-                <div id="input-task" class="d-flex align-items-center">
-                    <input name="task-status" class="form-check-input me-2" type="checkbox" value="" aria-label="..." checked />
-                    <span class="task task--ready">${task}</span>
-                </div>
-                    <a href="#!" data-mdb-toggle="tooltip" title="Remove item">
-                    <i class="fas fa-times text-primary"></i>
-                </a>
-            </li>`;
-        } else {
+        if (!checked) {
             taskCode = `<li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
                 <div id="input-task" class="d-flex align-items-center">
                     <input name="task-status" class="form-check-input me-2" type="checkbox" value="" aria-label="..." />
@@ -194,62 +176,41 @@ const insertTask = function (task, checked, done) {
     }
     taskList.insertAdjacentHTML("beforeend", taskCode);
     refreshCheckboxAndRemovesLists();
-    restartEventListeners();
     saveToStorage();
     return document.createTextNode(taskCode);
 };
 
-const startEventListeners = function () {
-    for (let checkbox of checkboxes) {
-        checkbox.addEventListener("change", function () {
-            let taskText;
-            if (this.checked) {
-                taskText = getTaskText(this);
-                taskText.classList.add("task--ready");
-                insertTask(taskText.innerHTML, true, true);
-                saveToStorage();
-                getTaskElem(taskText).remove();
-                removeFromStorage(this);
-            }
-        });
+document.getElementById("task-list").addEventListener("change", function (e) {
+    if (e.target && e.target.tagName === "INPUT") {
+        if (e.target.checked) {
+            let taskText = getTaskText(e.target);
+            taskText.classList.add("task--ready");
+            insertTask(taskText.innerHTML, true, true);
+            saveToStorage();
+            getTaskElem(taskText).remove();
+            removeFromStorage(e.target);
+        }
     }
+});
 
-    for (let remove of removes) {
-        remove.addEventListener("click", function () {
-            let task = getRemoveElem(this);
-            task.remove();
-            removeFromStorage(this);
-            refreshCheckboxAndRemovesLists();
-        });
+document.getElementById("task-list").addEventListener("click", function (e) {
+    if (e.target && e.target.tagName === "I") {
+        let task = getTaskElem(e.target);
+        task.remove();
+        removeFromStorage(e.target.parentNode);
+        refreshCheckboxAndRemovesLists();
     }
-};
-
-const stopEventListeners = function () {
-    for (let checkbox of checkboxes) {
-        checkbox.removeEventListener("change", function () {});
-    }
-
-    for (let remove of removes) {
-        remove.removeEventListener("click", function () {});
-    }
-};
-
-const restartEventListeners = function () {
-    stopEventListeners();
-    startEventListeners();
-};
+});
 
 //code
 document.addEventListener("DOMContentLoaded", function () {
     restoreFromStorage();
 });
 
-startEventListeners();
-
 submitButton.addEventListener("click", function () {
     let taskText = document.getElementById("form__add-task").value;
     document.getElementById("form__add-task").value = "";
-    if (taskText.length !== 0 && taskText.trim() && taskExists(taskText, false)) insertTask(taskText, false, false);
+    if (taskText.length !== 0 && taskText.trim() && taskExists(taskText)) insertTask(taskText, false, false);
 });
 
 completeButton.addEventListener("click", function () {
