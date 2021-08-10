@@ -14,12 +14,15 @@ body {
 }
 
 .card, #list-item {
+  overflow: hidden;
+  max-height: 80vh;
   border-radius: 15px;
   background-color: #222;
   color: #eeeeee;
 }
 
 .card-body {
+  overflow-y: scroll;
   transition: opacity 1s ease;
 }
 

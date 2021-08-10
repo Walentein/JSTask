@@ -14,12 +14,15 @@ body {
 }
 
 .card {
+    overflow: hidden;
+    max-height: 80vh;
     border-radius: 15px;
     background-color: #222;
     color: rgba(238, 238, 238, 1);
 }
 
 .card-body {
+    overflow-y: scroll;
     transition: opacity 1s ease;
 }
 
