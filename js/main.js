@@ -133,23 +133,32 @@ const restoreFromStorage = function () {
     }
 };
 
-const completedTaskExists = function (task) {
+const taskExists = function (task, doneList) {
     let insertFlag = true;
     let tempTask;
-    let taskSpans = document.querySelectorAll(".task--ready");
+    let list;
+    let taskSpans;
+    if (doneList) {
+        list = "done-list";
+        taskSpans = document.querySelectorAll(".task.task--ready");
+    } else {
+        list = "task-list";
+        taskSpans = document.querySelectorAll(".task");
+    }
     for (let taskSpan of taskSpans) {
         tempTask = getCompletedTaskList(taskSpan);
-        if (tempTask.id === "done-list")
+        if (doneList && tempTask.id === list) {
             if (taskSpan.innerHTML === task) {
                 insertFlag = false;
                 break;
             }
+        }
     }
     return insertFlag;
 };
 
 const insertTask = function (task, checked, done) {
-    if (!completedTaskExists(task)) return -1;
+    if (!taskExists(task, true)) return -1;
     let taskList;
     let taskCode;
     if (!done) {
@@ -247,7 +256,7 @@ startEventListeners();
 submitButton.addEventListener("click", function () {
     let taskText = document.getElementById("form__add-task").value;
     document.getElementById("form__add-task").value = "";
-    if (taskText.length !== 0 && taskText.trim()) insertTask(taskText, false, false);
+    if (taskText.length !== 0 && taskText.trim() && taskExists(taskText, false)) insertTask(taskText, false, false);
 });
 
 completeButton.addEventListener("click", function () {
