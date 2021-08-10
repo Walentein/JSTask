@@ -205,18 +205,11 @@ const startEventListeners = function () {
             let taskText;
             if (this.checked) {
                 taskText = getTaskText(this);
-                if (!taskText.classList.contains("task--ready")) {
-                    taskText.classList.add("task--ready");
-                    insertTask(taskText.innerHTML, true, true);
-                    saveToStorage();
-                }
-            } else {
-                taskText = getTaskText(this);
-                if (taskText.classList.contains("task--ready")) {
-                    taskText.classList.remove("task--ready");
-                    saveToStorage();
-                }
-                removeCompletedTask(taskText.innerHTML);
+                taskText.classList.add("task--ready");
+                insertTask(taskText.innerHTML, true, true);
+                saveToStorage();
+                getTaskElem(taskText).remove();
+                removeFromStorage(this);
             }
         });
     }
