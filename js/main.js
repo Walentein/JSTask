@@ -47,20 +47,22 @@ const saveToStorage = () => {
 };
 
 const removeFromStorage = (item) => {
+    let taskObj;
     let taskText = getRemoveElem(item).querySelector(".task").innerHTML;
-    for (let task of listStorage) {
-        if (task.taskValue === taskText) {
+    Object.keys(localStorage).forEach(function (key) {
+        taskObj = retrieveFromStorage(getItem(key));
+        if (taskObj.taskValue === taskText) {
             removeItem(task.id);
         }
-    }
+    });
 };
 
 const restoreFromStorage = () => {
     let taskObj;
-    for (let task of listStorage) {
-        taskObj = retrieveFromStorage(task);
+    Object.keys(localStorage).forEach(function (key) {
+        taskObj = retrieveFromStorage(getItem(key));
         insertTask({ taskValue: taskObj.taskValue, checked: taskObj.checked });
-    }
+    });
 };
 
 const taskExists = (task) => {
