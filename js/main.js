@@ -174,7 +174,7 @@ const insertTask = function (task, checked, done) {
                 </div>
             </li>`;
     }
-    taskList.insertAdjacentHTML("beforeend", taskCode);
+    taskList.insertAdjacentHTML("afterbegin", taskCode);
     refreshCheckboxAndRemovesLists();
     saveToStorage();
     return document.createTextNode(taskCode);
@@ -211,7 +211,7 @@ submitButton.addEventListener("click", function (event) {
     event.preventDefault();
     let taskText = document.getElementById("form__add-task").value;
     document.getElementById("form__add-task").value = "";
-    if (taskText.length !== 0 && taskText.trim() && taskExists(taskText)) insertTask(taskText, false, false);
+    if (taskText.trim().length !== 0 && taskExists(taskText)) insertTask(taskText, false, false);
 });
 
 completeButton.addEventListener("click", function () {
