@@ -1,4 +1,7 @@
 "use strict";
+
+import { v4 as uuidv4 } from "uuid";
+
 //setting system getters
 const querySelect = (item) => document.querySelector(item);
 const querySelectAll = (item) => document.querySelectorAll(item);
