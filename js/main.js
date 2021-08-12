@@ -25,12 +25,12 @@ const getCompletedTaskList = (element) => getTaskElem(element).parentNode;
 
 const stringLastWord = (text) => text.split(" ").pop();
 
-const refreshCheckboxAndRemovesLists = function () {
+const refreshCheckboxAndRemovesLists = () => {
     checkboxes = document.querySelectorAll("input[name='task-status']");
     removes = document.querySelectorAll("[title='Remove item']");
 };
 
-const calculateCompletedTasks = function () {
+const calculateCompletedTasks = () => {
     let counter = 0;
     for (let i = 10000; ; i++) {
         if (getItem(i)) counter++;
@@ -45,14 +45,14 @@ let tasksNumber = totalTasksNumber - completedTasksNumber;
 let insertPosition = completedTasksNumber + 10000;
 //========================================================
 
-const recalcTaskVariables = function () {
+const recalcTaskVariables = () => {
     totalTasksNumber = Object.keys(localStorage).length;
     completedTasksNumber = calculateCompletedTasks();
     tasksNumber = totalTasksNumber - completedTasksNumber;
     insertPosition = completedTasksNumber + 10000;
 };
 
-const saveToStorage = function () {
+const saveToStorage = () => {
     let taskValue;
     for (let i = 0; i < checkboxes.length; i++) {
         taskValue = getTaskText(checkboxes[i]).innerHTML;
@@ -64,7 +64,7 @@ const saveToStorage = function () {
     }
 };
 
-const saveCompletedTask = function (item) {
+const saveCompletedTask = (item) => {
     recalcTaskVariables();
     let flagInsert = true;
     let taskText;
@@ -76,7 +76,7 @@ const saveCompletedTask = function (item) {
     if (flagInsert) saveItem(insertPosition, taskText);
 };
 
-const reassignStorageKeys = function (startingKey, flagCompletedTasks) {
+const reassignStorageKeys = (startingKey, flagCompletedTasks) => {
     let count;
     if (!flagCompletedTasks) count = tasksNumber;
     else count = insertPosition;
@@ -88,7 +88,7 @@ const reassignStorageKeys = function (startingKey, flagCompletedTasks) {
     removeItem(count - 1);
 };
 
-const removeCompletedTask = function (item) {
+const removeCompletedTask = (item) => {
     let taskText = item + checkedMark;
     for (let i = 10000; i < insertPosition + 1; i++) {
         if (taskText === getItem(i)) {
@@ -98,7 +98,7 @@ const removeCompletedTask = function (item) {
     }
 };
 
-const removeFromStorage = function (element) {
+const removeFromStorage = (element) => {
     recalcTaskVariables();
     let taskValue = getRemoveElem(element).querySelector(".task").innerHTML;
     let modifiedTaskValue = taskValue + checkedMark;
@@ -110,7 +110,7 @@ const removeFromStorage = function (element) {
     }
 };
 
-const restoreFromStorage = function () {
+const restoreFromStorage = () => {
     let taskValue;
     for (let i = 0; i < tasksNumber; i++) {
         taskValue = getItem(i);
@@ -132,7 +132,7 @@ const restoreFromStorage = function () {
     }
 };
 
-const taskExists = function (task) {
+const taskExists = (task) => {
     let insertFlag = true;
     let tempTask;
     let taskSpans;
@@ -150,13 +150,8 @@ const taskExists = function (task) {
     return insertFlag;
 };
 
-const insertTask = function (task, checked, done) {
-    let taskList;
-    let taskCode;
-    if (!done) {
-        taskList = document.querySelector("#task-list");
-        if (!checked) {
-            taskCode = `<li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
+const renderTask = (task) => {
+    let taskCode = `<li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
                 <div id="input-task" class="d-flex align-items-center">
                     <input name="task-status" class="form-check-input me-2" type="checkbox" value="" aria-label="..." />
                     <span class="task">${task}</span>
@@ -165,14 +160,29 @@ const insertTask = function (task, checked, done) {
                     <i class="fas fa-times text-primary"></i>
                 </a>
             </li>`;
-        }
-    } else {
-        taskList = document.querySelector("#done-list");
-        taskCode = `<li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
+    return taskCode;
+};
+
+const renderCompletedTask = (task) => {
+    let taskCode = `<li id="list-item" class="list-group-item d-flex justify-content-between align-items-center border-start-0 border-top-0 border-end-0 border-bottom rounded-0 mb-2">
                 <div id="input-task" class="d-flex align-items-center">
                     <span class="task task--ready">${task}</span>
                 </div>
             </li>`;
+    return taskCode;
+};
+
+const insertTask = (task, checked, done) => {
+    let taskList;
+    let taskCode;
+    if (!done) {
+        taskList = document.querySelector("#task-list");
+        if (!checked) {
+            taskCode = renderTask(task);
+        }
+    } else {
+        taskList = document.querySelector("#done-list");
+        taskCode = renderCompletedTask(task);
     }
     taskList.insertAdjacentHTML("afterbegin", taskCode);
     refreshCheckboxAndRemovesLists();
