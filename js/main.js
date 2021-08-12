@@ -1,13 +1,17 @@
 "use strict";
+//setting system getters
+const querySelect = (item) => document.querySelector(item);
+const querySelectAll = (item) => document.querySelectorAll(item);
+const getByID = (item) => document.getElementById(item);
 
 //setting global variables
 const listStorage = window.localStorage;
 let totalTasksNumber = Object.keys(localStorage).length;
 
-const submitButton = document.getElementById("add-task-button");
-const completeButton = document.getElementById("show-completed-button");
-let checkboxes = document.querySelectorAll("input[name='task-status']");
-let removes = document.querySelectorAll("[title='Remove item']");
+const submitButton = getByID("add-task-button");
+const completeButton = getByID("show-completed-button");
+let checkboxes = querySelectAll("input[name='task-status']");
+let removes = querySelectAll("[title='Remove item']");
 
 const checkedMark = " checked:true";
 const modifiedCheckedMark = checkedMark.trim();
@@ -26,8 +30,8 @@ const getCompletedTaskList = (element) => getTaskElem(element).parentNode;
 const stringLastWord = (text) => text.split(" ").pop();
 
 const refreshCheckboxAndRemovesLists = () => {
-    checkboxes = document.querySelectorAll("input[name='task-status']");
-    removes = document.querySelectorAll("[title='Remove item']");
+    checkboxes = querySelectAll("input[name='task-status']");
+    removes = querySelectAll("[title='Remove item']");
 };
 
 const calculateCompletedTasks = () => {
@@ -137,7 +141,7 @@ const taskExists = (task) => {
     let tempTask;
     let taskSpans;
     let list = "task-list";
-    taskSpans = document.querySelectorAll(".task");
+    taskSpans = querySelectAll(".task");
     for (let taskSpan of taskSpans) {
         tempTask = getCompletedTaskList(taskSpan);
         if (tempTask.id === list) {
@@ -176,12 +180,12 @@ const insertTask = (task, checked, done) => {
     let taskList;
     let taskCode;
     if (!done) {
-        taskList = document.querySelector("#task-list");
+        taskList = querySelect("#task-list");
         if (!checked) {
             taskCode = renderTask(task);
         }
     } else {
-        taskList = document.querySelector("#done-list");
+        taskList = querySelect("#done-list");
         taskCode = renderCompletedTask(task);
     }
     taskList.insertAdjacentHTML("afterbegin", taskCode);
@@ -190,7 +194,7 @@ const insertTask = (task, checked, done) => {
     return document.createTextNode(taskCode);
 };
 
-document.getElementById("task-list").addEventListener("change", function (e) {
+getByID("task-list").addEventListener("change", function (e) {
     if (e.target && e.target.tagName === "INPUT") {
         if (e.target.checked) {
             let taskText = getTaskText(e.target);
@@ -203,7 +207,7 @@ document.getElementById("task-list").addEventListener("change", function (e) {
     }
 });
 
-document.getElementById("task-list").addEventListener("click", function (e) {
+getByID("task-list").addEventListener("click", function (e) {
     if (e.target && e.target.tagName === "I") {
         let task = getTaskElem(e.target);
         task.remove();
@@ -219,13 +223,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 submitButton.addEventListener("click", function (event) {
     event.preventDefault();
-    let taskText = document.getElementById("form__add-task").value;
-    document.getElementById("form__add-task").value = "";
+    let taskText = getByID("form__add-task").value;
+    getByID("form__add-task").value = "";
     if (taskText.trim().length !== 0 && taskExists(taskText)) insertTask(taskText, false, false);
 });
 
 completeButton.addEventListener("click", function () {
-    let completedList = document.querySelector("#done-list-container");
+    let completedList = querySelect("#done-list-container");
     if (completedList.classList.contains("hidden")) completedList.classList.remove("hidden");
     else completedList.classList.add("hidden");
 });
