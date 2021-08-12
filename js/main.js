@@ -28,6 +28,8 @@ const getTaskElem = (element) => element.parentNode.parentNode;
 const getTaskText = (element) => getTaskElem(element).querySelector(".task");
 const getCompletedTaskList = (element) => getTaskElem(element).parentNode;
 
+const generateID = () => Date.now();
+
 const stringLastWord = (text) => text.split(" ").pop();
 
 const refreshCheckboxAndRemovesLists = () => {
