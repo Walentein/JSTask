@@ -10,7 +10,13 @@ const listStorage = window.localStorage;
 let totalTasksNumber = Object.keys(localStorage).length;
 
 //declaring functions
-const createTask = ({ id, checked, taskValue }) => (task = { id: id, checked: checked, taskValue: taskValue });
+const createTask = ({ id, checked, taskValue }) => {
+    const taskObj = new Object();
+    taskObj.id = id;
+    taskObj.checked = checked;
+    taskObj.taskValue = taskValue;
+    return taskObj;
+};
 
 const saveItem = (key, item) => listStorage.setItem(key, item);
 const getItem = (key) => listStorage.getItem(key);
@@ -123,7 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("click", (event) => {
     event.preventDefault();
     let elementId = event.target.id;
-    console.log(event.target.id);
     switch (elementId) {
         case "remove-item":
             let task = getTaskElem(event.target);
@@ -149,8 +154,12 @@ document.addEventListener("click", (event) => {
         case "add-task-button":
             let taskText = getByID("form__add-task").value;
             getByID("form__add-task").value = "";
+            let id = generateID();
             if (taskText.trim().length !== 0 && taskExists(taskText)) {
-                insertTask({ taskValue: taskText, checked: false });
+                let task = createTask({ id: id, checked: false, taskValue: taskText });
+                let savedTask = prepareForStaorage(task);
+                saveItem(task.id, savedTask);
+                insertTask(task);
             }
             break;
     }
