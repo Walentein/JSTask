@@ -50,7 +50,7 @@ const removeFromStorage = (item) => {
     Object.keys(localStorage).forEach(function (key) {
         taskObj = retrieveFromStorage(getItem(key));
         if (taskObj.taskValue === taskText) {
-            removeItem(task.id);
+            removeItem(taskObj.id);
         }
     });
 };
@@ -133,6 +133,7 @@ document.addEventListener("click", (event) => {
         case "remove-item":
             let task = getTaskElem(event.target);
             task.remove();
+            console.log(event.target.parentNode);
             removeFromStorage(event.target.parentNode);
             break;
         case "task-status":
