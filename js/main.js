@@ -118,9 +118,9 @@ const insertTask = (task) => {
 };
 
 //code
-document.addEventListener("DOMContentLoaded", function () {
+const init = () => {
     restoreFromStorage();
-});
+};
 
 document.addEventListener("click", (event) => {
     event.preventDefault();
@@ -166,3 +166,5 @@ document.addEventListener("click", (event) => {
             break;
     }
 });
+
+window.onload = init();
