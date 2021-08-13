@@ -118,10 +118,6 @@ const insertTask = (task) => {
 };
 
 //code
-
-/*window.addEventListener("onload", () => {
-    restoreFromStorage();
-});*/
 document.addEventListener("DOMContentLoaded", function () {
     restoreFromStorage();
 });
