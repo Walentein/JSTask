@@ -28,7 +28,7 @@ const retrieveFromStorage = (item) => JSON.parse(item);
 const findTaskInStorage = (task) => {
     let taskObj;
     let taskId;
-    Object.keys(localStorage).forEach(function (key) {
+    Object.keys(localStorage).forEach((key) => {
         taskObj = retrieveFromStorage(getItem(key));
         if (taskObj.taskValue === task.taskValue) {
             taskId = taskObj.id;
@@ -47,7 +47,7 @@ const generateID = () => Date.now();
 const removeFromStorage = (item) => {
     let taskObj;
     let taskText = getRemoveElem(item).querySelector(".task").innerHTML;
-    Object.keys(localStorage).forEach(function (key) {
+    Object.keys(localStorage).forEach((key) => {
         taskObj = retrieveFromStorage(getItem(key));
         if (taskObj.taskValue === taskText) {
             removeItem(taskObj.id);
@@ -57,7 +57,7 @@ const removeFromStorage = (item) => {
 
 const restoreFromStorage = () => {
     let taskObj;
-    Object.keys(localStorage).forEach(function (key) {
+    Object.keys(localStorage).forEach((key) => {
         taskObj = retrieveFromStorage(getItem(key));
         insertTask({ taskValue: taskObj.taskValue, checked: taskObj.checked });
     });
