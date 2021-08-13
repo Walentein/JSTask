@@ -7,7 +7,6 @@ const getByID = (item) => document.getElementById(item);
 
 //setting global variables
 const listStorage = window.localStorage;
-let totalTasksNumber = Object.keys(localStorage).length;
 
 //declaring functions
 const createTask = ({ id, checked, taskValue }) => {
@@ -27,14 +26,15 @@ const prepareForStaorage = (item) => JSON.stringify(item);
 const retrieveFromStorage = (item) => JSON.parse(item);
 
 const findTaskInStorage = (task) => {
+    let taskObj;
+    let taskId;
     Object.keys(localStorage).forEach(function (key) {
         taskObj = retrieveFromStorage(getItem(key));
-        if (taskObj.taskValue === taskText) {
-            return task.id;
-        } else {
-            return null;
+        if (taskObj.taskValue === task.taskValue) {
+            taskId = taskObj.id;
         }
     });
+    return taskId;
 };
 
 const getRemoveElem = (element) => element.parentNode;
@@ -133,15 +133,20 @@ document.addEventListener("click", (event) => {
         case "remove-item":
             let task = getTaskElem(event.target);
             task.remove();
-            console.log(event.target.parentNode);
             removeFromStorage(event.target.parentNode);
             break;
         case "task-status":
             if (event.target.checked) {
-                let taskText = getTaskText(event.target);
-                taskText.classList.add("task--ready");
-                insertTask({ checked: true, taskValue: taskText.innerHTML });
-                getTaskElem(taskText).remove();
+                let taskSpan = getTaskText(event.target);
+                let taskText = taskSpan.innerHTML;
+                let taskId = findTaskInStorage({ taskValue: taskText });
+                let task = retrieveFromStorage(getItem(taskId));
+                task.checked = true;
+                let savedTask = prepareForStaorage(task);
+                saveItem(task.id, savedTask);
+                taskSpan.classList.add("task--ready");
+                insertTask({ checked: true, taskValue: taskText });
+                getTaskElem(taskSpan).remove();
             }
             break;
         case "show-completed-button":
